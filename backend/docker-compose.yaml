@@ -1,0 +1,22 @@
+services:
+  java_app:
+    container_name: java_app
+    image: 'mercadito-uv:latest'
+    build: .
+    ports:
+      - 8080:8080
+    environment:
+      - DATABASE_URL=jdbc:postgresql://java_db:5432/mydbtest
+      - DATABASE_USERNAME=postgres
+      - DATABASE_PASSWORD=postgres
+    depends_on:
+      - java_db
+  java_db:
+    container_name: java_db
+    image: postgres:latest
+    environment:
+      - POSTGRES_DB=mydbtest
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_USER=postgres
+    ports:
+      - 5432:5432
