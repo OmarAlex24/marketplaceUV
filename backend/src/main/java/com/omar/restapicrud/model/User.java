@@ -6,6 +6,8 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -39,12 +41,24 @@ public class User {
   @JsonBackReference
   private Campus userCampus;
 
+  @Column
+  private String clabeBank;
+
+  @Column
+  private Date creationDate;
+
   @OneToMany(mappedBy = "postOwner", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
   @JsonManagedReference
   private List<Post> userPosts;
 
-  @Column
-  private String clabe;
+  @ManyToMany
+  @JoinTable(
+    name = "userFavoritePosts",
+    joinColumns = @JoinColumn(name = "user_id"),
+    inverseJoinColumns = @JoinColumn(name = "post_id")
+  )
+  @JsonManagedReference
+  private List<Post> userFavoritePosts;
 
   public User(String name, String lastName, String carnetNumber, String schoolMail, String password, Campus campus) {
     this.name = name;
@@ -55,13 +69,14 @@ public class User {
     this.userCampus = campus;
   }
 
-  public User(String name, String lastName, String carnetNumber, String schoolMail, String password, Campus campus, String clabe) {
+  public User(String name, String lastName, String carnetNumber, String schoolMail, String password, Campus campus, String clabeBank) {
     this.name = name;
     this.lastName = lastName;
     this.carnetNumber = carnetNumber;
     this.schoolMail = schoolMail;
     this.password = password;
     this.userCampus = campus;
-    this.clabe = clabe;
+    this.clabeBank = clabeBank;
+    this.creationDate = new Date();
   }
 }

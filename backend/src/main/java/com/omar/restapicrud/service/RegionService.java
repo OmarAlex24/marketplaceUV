@@ -1,5 +1,6 @@
 package com.omar.restapicrud.service;
 
+import com.omar.restapicrud.dto.RegionDTO;
 import com.omar.restapicrud.model.Region;
 import com.omar.restapicrud.repository.RegionRepository;
 import com.omar.restapicrud.service.interfaces.iServiceRegion;
@@ -17,9 +18,11 @@ public class RegionService implements iServiceRegion<Region> {
     RegionRepository regionRepository;
 
     @Override
-    public Region createRegion(Region region) {
+    public Region createRegion(RegionDTO region) {
         if (!regionRepository.existsByRegionNameIgnoreCase(region.getRegionName())) {
-            return regionRepository.save(region);
+            Region nuevaRegion = new Region(region.getRegionName());
+
+            return regionRepository.save(nuevaRegion);
         }
         throw new ResponseStatusException(
                 HttpStatus.CONFLICT, "Ya existe una region con ese nombre");

@@ -8,6 +8,7 @@ import java.util.List;
 
 public interface iServiceCampus <T>{
     public T createCampus(@RequestBody CampusDTO t);
+    public List<T> createCampuses(@RequestBody List<CampusDTO> t);
     public T getCampusById(@PathVariable Long id);
     public List<T> listAllCampuses ();
     public void removeCampus(@PathVariable Long id) throws Exception;

@@ -1,6 +1,7 @@
 package com.omar.restapicrud.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -20,23 +21,27 @@ public class Campus {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @JsonBackReference
     private Long campusId;
 
     @Column(nullable = false)
     private String campusName;
 
     @ManyToOne
-    @JoinColumn(name = "region_id", nullable = false)
-    private Region regionId;
+    @JoinColumn(name = "regionId", nullable = false)
+    @JsonBackReference
+    private Region region;
+
+    @JsonInclude
+    public String getCampusRegion() {
+        return region.getRegionName();
+    }
 
     @OneToMany(mappedBy = "userCampus", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonManagedReference
     private List<User> users;
 
-    public Campus(Long campusId, String campusName, Region regionId) {
-        this.campusId = campusId;
+    public Campus(String campusName, Region region) {
         this.campusName = campusName;
-        this.regionId = regionId;
+        this.region = region;
     }
 }

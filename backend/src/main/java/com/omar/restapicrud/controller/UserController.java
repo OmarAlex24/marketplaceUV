@@ -20,8 +20,13 @@ public class UserController {
   private UserService userService;
 
   @PostMapping()
-  public User createUser(@RequestBody UserDTO usuario) {
-    return userService.createUser(usuario);
+  public User createUser(@RequestBody UserDTO user) {
+    return userService.createUser(user);
+  }
+
+  @PostMapping("/batch")
+  public List<User> createUsers(@RequestBody List<UserDTO> users){
+    return userService.createUsers(users);
   }
 
   @GetMapping
@@ -37,5 +42,10 @@ public class UserController {
   @GetMapping("/{id}/remove")
   public void removeUser(@PathVariable Long id) throws Exception {
       userService.removeUser(id);
+  }
+
+  @PostMapping("/{userId}/add/{postId}")
+  public User addPostToFavorites(@PathVariable Long userId, @PathVariable Long postId){
+    return userService.addPostToFavorites(userId, postId);
   }
 }

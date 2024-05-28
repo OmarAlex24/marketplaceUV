@@ -21,6 +21,11 @@ public class CampusController {
         return campusService.createCampus(campus);
     }
 
+    @PostMapping("/batch")
+    public List<Campus> createCampuses(@RequestBody List<CampusDTO> campuses){
+        return campusService.createCampuses(campuses);
+    }
+
     @GetMapping
     public List<Campus> getAllCampuses() {
         return campusService.listAllCampuses();

@@ -1,8 +1,10 @@
 package com.omar.restapicrud.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.List;
@@ -11,6 +13,7 @@ import java.util.List;
 @Table(name = "regions")
 @Getter
 @Setter
+@NoArgsConstructor
 public class Region {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -19,7 +22,11 @@ public class Region {
     @Column(nullable = false, unique = true)
     private String regionName;
 
-    @OneToMany(mappedBy = "campusId", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "region", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonManagedReference
-    private List<Campus> Campuses;
+    private List<Campus> campuses;
+
+    public Region(String regionName) {
+        this.regionName = regionName;
+    }
 }

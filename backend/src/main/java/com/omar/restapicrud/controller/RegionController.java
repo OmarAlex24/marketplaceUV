@@ -1,5 +1,6 @@
 package com.omar.restapicrud.controller;
 
+import com.omar.restapicrud.dto.RegionDTO;
 import com.omar.restapicrud.model.Region;
 import com.omar.restapicrud.service.RegionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +17,7 @@ public class RegionController {
     private RegionService regionService;
 
     @PostMapping()
-    public Region createRegion(@RequestBody Region region) {
+    public Region createRegion(@RequestBody RegionDTO region) {
         return regionService.createRegion(region);
     }
 

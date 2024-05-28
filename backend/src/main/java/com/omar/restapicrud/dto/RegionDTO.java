@@ -5,7 +5,6 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class CampusDTO {
-    private String campusName;
-    private Long campusRegionId;
+public class RegionDTO {
+    private String regionName;
 }

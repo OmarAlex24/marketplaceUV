@@ -29,16 +29,25 @@ public class PostController {
         return postService.createPost(post);
     }
 
+    @PostMapping("/batch")
+    public List<Post> createPosts(@RequestBody List<PostDTO> posts) {
+        return postService.createPosts(posts);
+    }
+
     @GetMapping()
     public List<Post> getAllPosts(){
         return postService.listAllPosts();
     }
 
-    @GetMapping("/{id}/remove")
+    @GetMapping("/{id}/toggle")
+    public void togglePostVisibility(@PathVariable Long id) throws Exception {
+        postService.togglePostVisibility(id);
+    }
+
+    @PostMapping("/{id}/remove")
     public void removePost(@PathVariable Long id) throws Exception {
         postService.removePost(id);
     }
-
 
     @GetMapping("/user/{id}")
     public List<Post> getAllPostsByUserId(@PathVariable Long id) {

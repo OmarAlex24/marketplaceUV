@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -18,6 +19,7 @@ public class CampusService implements iServiceCampus<Campus> {
     @Autowired
     CampusRepository campusRepository;
 
+    @Autowired
     RegionRepository regionRepository;
 
     @Override
@@ -25,12 +27,32 @@ public class CampusService implements iServiceCampus<Campus> {
         if (!campusRepository.existsByCampusNameIgnoreCase(campus.getCampusName())) {
             Region region = regionRepository.findById(campus.getCampusRegionId()).get();
 
-            Campus nuevoCampus = new Campus(campus.getCampusId(), campus.getCampusName(), region);
+            Campus nuevoCampus = new Campus(campus.getCampusName(), region);
 
             return campusRepository.save(nuevoCampus);
         }
         throw new ResponseStatusException(
                 HttpStatus.CONFLICT, "Ya existe un campus con ese nombre");
+    }
+
+    @Override
+    public List<Campus> createCampuses(List<CampusDTO> campuses) {
+        List<Campus> savedCampuses = new ArrayList<>();
+
+        campuses.forEach(campus -> {
+            if (!campusRepository.existsByCampusNameIgnoreCase(campus.getCampusName())) {
+                Region region = regionRepository.findById(campus.getCampusRegionId()).get();
+
+                Campus nuevoCampus = new Campus(campus.getCampusName(), region);
+
+                savedCampuses.add(campusRepository.save(nuevoCampus));
+            }
+            throw new ResponseStatusException(
+                    HttpStatus.CONFLICT, "Ya existe un campus con ese nombre");
+        });
+
+        return savedCampuses;
+
     }
 
     @Override
